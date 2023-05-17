@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.hero,.hero-2,.hero-3,.hero-4,.hero-5{
+  height: 100vh;
+}
+
+.hero-2-right,.hero-2-left{
+  height: 100vh;
+}
+@media(max-width: 767px){
+  .hero,
+  .hero-2,.hero-3,.hero-4,.hero-5{
+      height:auto;
+  }
+}
+
+.form-control.success {
+  border-color: #198754;
+}
+.form-control.error {
+  border-color: #dc3545;
+}
+.form-error {
+  color: #dc3545;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+form .form-control:focus{
+    border-color: #ced4da;
+    box-shadow: none;
+  }
+/* ------------------bckground1--------------------- */
+.bckground1{
+  background-color: #dcdee1;
+}
