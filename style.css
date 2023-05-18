@@ -39,3 +39,28 @@ form .form-control:focus{
 .bckground1{
   background-color: #dcdee1;
 }
+/* ----------------------contact me----------------------------- */
+.contain{
+    width: 200px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif
+}
+.form-control{
+  padding: 10px;
+}
+.form-control small{
+  font-size: 10px;
+  visibility: hidden;
+}
+.form-control.success input{
+  border: 2px solid rgb(6, 185, 6);
+  border-radius: 3px;
+}
+.form-control.error input{
+  border: 2px solid red;
+  border-radius: 3px;
+}

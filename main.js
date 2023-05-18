@@ -1,74 +1,92 @@
-const form = document.getElementById("gform");
-const fullname = document.getElementById("fullname");
-const email = document.getElementById("email");
-const message = document.getElementById("message");
+const userName = document.getElementById("textUsername");
+const contactNumber = document.getElementById("cont");
+const eMail = document.getElementById("mail");
+const message = document.getElementById("mesg");
 
-const setSuccess = (element) => {
-  const inputElement = element.parentElement.querySelector(".form-control");
-  const errorDisplay = element.parentElement.querySelector(".form-error");
-  errorDisplay.innerText = "";
-  inputElement.classList.remove("error");
-  inputElement.classList.add("success");
-};
+function validateForm(){
 
-const setError = (element, message) => {
-  const inputElement = element.parentElement.querySelector(".form-control");
-  const errorDisplay = element.parentElement.querySelector(".form-error");
-  errorDisplay.innerText = message;
-  inputElement.classList.add("error");
-  inputElement.classList.remove("success");
-};
-
-const isValidEmail = (email) => {
-  const regularEx =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regularEx.test(String(email).toLowerCase());
-};
-
-const validateInput = () => {
-  const nameValue = fullname.value.trim();
-  const emailValue = email.value.trim();
-  const messageValue = message.value.trim();
-  if (nameValue === "") {
-    setError(fullname, "Full name is required");
-  } else {
-    setSuccess(fullname);
+  if(userName.value.trim()=== ""){
+      onError(userName,"Enter a valid name")
   }
-  if (emailValue === "") {
-    setError(email, "Email is required");
-  } else if (!isValidEmail(emailValue)) {
-    setError(email, "Provide a valid email address");
-  } else {
-    setSuccess(email);
+  else{
+      onSucces(userName);
   }
-  if (messageValue === "") {
-    setError(message, "Message is required");
-  } else {
-    setSuccess(message);
+  if(contactNumber.value.trim()===""){
+      onError(contactNumber,"Enter a phone number")
+      return false;
   }
-};
+  else{
+    if(!phoneNumber(contactNumber.value.trim())){
+      onError(contactNumber,"Contact number should be proper");
+      return false;
+    }
+    else{
+      onSucces(contactNumber);
+    } 
+  }
+  if(eMail.value.trim()=== ""){
+      onError(eMail,"Email should not be empty")
+      return false;
+  }
+  else{
+      if(!isValidEmail(eMail.value.trim())){
+          onError(eMail,"Email should be proper");
+          return false;
+      }
+      else{
+          onSucces(eMail);
+      }
+  }
+  if(message.value.trim()===""){
+    onError(message,"send a message");
+    return false;
+  }
+  else{
+    onSucces(message);
+  }
+  return true;
+}
+function onSucces(input){
+  let parent=input.parentElement
+  let messageEle= parent.querySelector("small")
+  messageEle.style.visibility="hidden";
+  messageEle.innerText="";
+  parent.classList.remove("error");
+  parent.classList.add("success");
+}
+function onError(input,comment){
+  let parent=input.parentElement
+  let messageEle= parent.querySelector("small")
+  messageEle.style.visibility="visible";
+  messageEle.innerText= comment;
+  parent.classList.remove("success");
+  parent.classList.add("error");
+}
+function isValidEmail(email){
+  return/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(email);
+}
+function phoneNumber(teleNumber){
+  return/^\d{10}$/.test(teleNumber);
+}
 
-const onSubmitForm = (e) => {
-  e.preventDefault();
-  validateInput();
-  if (
-    !email.classList.contains("error") &&
-    !fullname.classList.contains("error") &&
-    !message.classList.contains("error")
-  ) {
-    $.ajax({
-      url: "https://script.google.com/macros/s/AKfycby13JXnE0ZiXBlV34OMHJXKXD-DpAL5wKvTvRSBbtTKSg4arxeAuPvqHTGpZzFO7OyMog/exec",
-      data: $("#gform").serialize(),
-      method: "post",
-      success: function (response) {
-        alert("Form submitted successfully");
-        window.location.reload();
-      },
-      error: function (err) {
-        alert("Something Went Wrong");
-      },
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzR8UaogYLJua0Zvp4E1d-D3y_4izOHk1GsewXhNKUZDplnkveF-YTZCPhZ_BV-Emju/exec'
+const form = document.getElementById("gform")
+const msg = document.getElementById("msg")
+
+// document.querySelector("button")
+
+    form.addEventListener("submit",e=>{
+        e.preventDefault();
+        if (validateForm()) {
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+              .then(response => {
+                msg.innerHTML = "Sent Successfully"
+                // alert("Sent Successfully")
+                setTimeout(function () {
+                  msg.innerHTML = ""
+                }, 5000)
+                form.reset()
+              })
+              .catch(error => console.error('Error!', error.message))
+          }
     });
-  }
-};
-
-form.addEventListener("submit", onSubmitForm);
